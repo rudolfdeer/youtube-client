@@ -1,11 +1,10 @@
-
 import * as React from 'react';
+import '../styles/index.scss';
+import Page from './Page';
 
 function App(): JSX.Element {
   return (
-    <>
-    <div>Hello</div>
-    </>
+    <Page/>
   );
 }
 
