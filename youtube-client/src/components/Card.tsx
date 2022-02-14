@@ -8,46 +8,54 @@ import PersonIcon from '@mui/icons-material/Person';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import styled from 'styled-components';
+import { Video } from '../interfaces';
 
 const InfoContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 const InfoText = styled.div`
   display: block;
   margin: 0;
   margin-left: 15px;
-`
+`;
 
-export default function VideoCard(): JSX.Element {
+type VideoCardProps = {
+  // change
+  video: Video;
+};
+
+export default function VideoCard(props: VideoCardProps): JSX.Element {
+  const { video } = props;
+
+  console.log(video);
+
   return (
     <Card sx={{ maxWidth: 300, height: 400 }}>
       <CardHeader title="Shrimp and Chorizo Paella" />
       <CardMedia
         component="img"
         height="200"
-        image="../../assets/oat.png"
+        image={video.snippet.thumbnails.medium.url}
         alt="Video image preview"
       />
       <InfoContainer>
         <PersonIcon />
-        <InfoText>Author name</InfoText>
+        <InfoText>{video.snippet.channelTitle}</InfoText>
       </InfoContainer>
       <InfoContainer>
         <DateRangeIcon />
-        <InfoText>Date of publishing</InfoText>
+        <InfoText>{video.snippet.publishedAt}</InfoText>
       </InfoContainer>
       <InfoContainer>
         <VisibilityIcon />
-        <InfoText>Views</InfoText>
+        <InfoText>{}</InfoText>
       </InfoContainer>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          {video.snippet.description}
         </Typography>
       </CardContent>
     </Card>

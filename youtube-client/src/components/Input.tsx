@@ -1,23 +1,28 @@
 import { TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { FormEventHandler, useState } from 'react';
 
+type SearchInputProps = {
+  handleSubmit: FormEventHandler<HTMLFormElement>;
+  value: string;
+  setValue: Function;
+};
 
-export default function SearchInput(): JSX.Element {
-  const [value, setValue] = useState('');
+export default function SearchInput(props: SearchInputProps): JSX.Element {
+  const { handleSubmit, value, setValue } = props;
 
-  const handleChange = (e: React.ChangeEvent) => {
-    const input = e.target as HTMLInputElement;
-    console.log(input.value);
-    setValue(input.value);
-  }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
 
-  return(
-    <TextField
-      id="outlined-name"
-      label="Search"
-      value={value}
-      onChange={handleChange}
-      sx={{width: 280}}
-    />
-  )
+  return (
+    <form onSubmit={handleSubmit}>
+      <TextField
+        id="outlined-name"
+        label="Search"
+        value={value}
+        onChange={handleChange}
+        sx={{ width: 280 }}
+      />
+    </form>
+  );
 }
