@@ -23,7 +23,6 @@ const InfoText = styled.div`
 `;
 
 type VideoCardProps = {
-  // change
   video: Video;
 };
 
@@ -33,13 +32,14 @@ export default function VideoCard(props: VideoCardProps): JSX.Element {
   console.log(video);
 
   return (
-    <Card sx={{ maxWidth: 300, height: 400 }}>
-      <CardHeader title="Shrimp and Chorizo Paella" />
+    <Card sx={{ width: 250, height: 400 }}>
+      <CardHeader title={video.snippet.title} sx={{ height: 100 }} />
       <CardMedia
         component="img"
         height="200"
         image={video.snippet.thumbnails.medium.url}
         alt="Video image preview"
+        sx={{ marginBottom: 2 }}
       />
       <InfoContainer>
         <PersonIcon />

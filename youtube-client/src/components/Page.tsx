@@ -4,7 +4,6 @@ import { useState } from 'react';
 import VideoCard from './Card';
 import SearchInput from './Input';
 import styled from 'styled-components';
-import Paper from '@mui/material/Paper';
 import youtubeApi from '../constants/api';
 
 const Main = styled.main`
