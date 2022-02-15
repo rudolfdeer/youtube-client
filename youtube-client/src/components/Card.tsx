@@ -29,8 +29,6 @@ type VideoCardProps = {
 export default function VideoCard(props: VideoCardProps): JSX.Element {
   const { video } = props;
 
-  console.log(video);
-
   return (
     <Card sx={{ width: 250, height: 400 }}>
       <CardHeader title={video.snippet.title} sx={{ height: 100 }} />

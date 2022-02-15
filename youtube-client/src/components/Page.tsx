@@ -4,7 +4,9 @@ import { useState } from 'react';
 import VideoCard from './Card';
 import SearchInput from './Input';
 import styled from 'styled-components';
+import { useQuery } from 'react-query';
 import youtubeApi from '../constants/api';
+import { Video } from '../interfaces';
 
 const Main = styled.main`
   max-width: 1200px;
@@ -19,8 +21,9 @@ export default function Page(): JSX.Element {
   const [value, setValue] = useState('');
   const [videos, setVideos] = useState([]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    if (!value) return;
+
     const response = await youtubeApi.get('/search', {
       params: {
         type: 'video',
@@ -29,6 +32,15 @@ export default function Page(): JSX.Element {
     });
     setVideos(response.data.items);
   };
+
+  const { isLoading, error, data } = useQuery<void, Error>(
+    'videos',
+    handleSubmit
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (error) return <div>'An error has occurred: {error.message}</div>;
 
   return (
     <Main>
@@ -40,8 +52,8 @@ export default function Page(): JSX.Element {
       <Grid container spacing={2}>
         {videos.map((el) => {
           return (
-            <Grid item xs={3}>
-              <VideoCard video={el} key={el.id.videoId} />
+            <Grid item xs={3} key={el.id.videoId}>
+              <VideoCard video={el} />
             </Grid>
           );
         })}

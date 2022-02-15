@@ -7,7 +7,7 @@ const Form = styled.form`
 `;
 
 type SearchInputProps = {
-  handleSubmit: FormEventHandler<HTMLFormElement>;
+  handleSubmit: Function;
   value: string;
   setValue: Function;
 };
@@ -20,7 +20,12 @@ export default function SearchInput(props: SearchInputProps): JSX.Element {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form
+      onSubmit={(e: React.FormEvent) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
       <TextField
         id="outlined-name"
         label="Search"
