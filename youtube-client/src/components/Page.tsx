@@ -26,6 +26,8 @@ export default function Page(): JSX.Element {
   const [pageCount, setPageCount] = useState(1);
   const [cards, setCards] = useState([]);
   const [videos, setVideos] = useState([]);
+  const [nextPageToken, setNextPageToken] = useState('');
+  const [prevPageToken, setPrevPageToken] = useState('');
 
   const { isLoading, error, data, refetch } = useQuery<Video[], Error>(
     'videos',
@@ -50,6 +52,16 @@ export default function Page(): JSX.Element {
 
     refetch();
     setVideos(response.data.items);
+
+    if (response.data.nextPageToken) {
+      setNextPageToken(response.data.nextPageToken)
+    }
+
+    if(response.data.prevPageToken) {
+      setPrevPageToken(response.data.prevPageToken)
+    }
+
+    console.log(response);
     return response.data.items;
   };
 
