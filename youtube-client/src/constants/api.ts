@@ -4,7 +4,7 @@ const youtubeApi = axios.create({
   baseURL: 'https://www.googleapis.com/youtube/v3/',
   params: {
     part: 'snippet',
-    maxResults: 15,
+    maxResults: 16,
     key: 'AIzaSyDeAYkuiFGAakVnoFI3JtEtjqwkYZWTgnM',
   },
 });

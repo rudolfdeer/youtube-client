@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import VideoCard from './Card';
@@ -18,9 +18,9 @@ const Main = styled.main`
   align-items: center;
 `;
 
-
 export default function Page(): JSX.Element {
   const [value, setValue] = useState('');
+  const [currentValue, setCurrentValue] = useState('');
   const [offset, setOffset] = useState(4);
   const [perPage] = useState(4);
   const [pageCount, setPageCount] = useState(1);
@@ -47,32 +47,34 @@ export default function Page(): JSX.Element {
       params: {
         type: 'video',
         q: value,
+        pageToken: nextPageToken ? nextPageToken : null,
       },
     });
-
+    console.log(response);
     refetch();
-    setVideos(response.data.items);
+    if (value !== currentValue) {
+      setVideos([...response.data.items]);
+    } else if (value === currentValue) {
+      setVideos([...videos, ...response.data.items]);
+    }
+
+    setCurrentValue(value);
 
     if (response.data.nextPageToken) {
-      setNextPageToken(response.data.nextPageToken)
+      setNextPageToken(response.data.nextPageToken);
     }
 
-    if(response.data.prevPageToken) {
-      setPrevPageToken(response.data.prevPageToken)
+    if (response.data.prevPageToken) {
+      setPrevPageToken(response.data.prevPageToken);
     }
 
-    console.log(response);
     return response.data.items;
   };
 
-  const handlePageClick = (e: {
-    selected: number;
-  }) => {
+  const handlePageClick = (e: { selected: number }) => {
     const selectedPage = e.selected;
     setOffset((selectedPage + 1) * perPage);
   };
-
-  
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -85,27 +87,34 @@ export default function Page(): JSX.Element {
         value={value}
         setValue={setValue}
       />
-      <Grid container spacing={2} style={{marginBottom: '20px'}}>
+      <Grid container spacing={2} style={{ marginBottom: '20px' }}>
         {cards?.map((el: Video) => {
           return (
-            <Grid item xs={3} key={el.id.videoId}>
+            <Grid item xs={12} sm={3} key={el.id.videoId} style={{ minWidth: '250px' }}>
               <VideoCard video={el} />
             </Grid>
           );
         })}
       </Grid>
       <ReactPaginate
-              previousLabel={'prev'}
-              nextLabel={'next'}
-              breakLabel={'...'}
-              breakClassName={'break-me'}
-              pageCount={pageCount}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={handlePageClick}
-              containerClassName={'pagination'}
-              activeClassName={'active'}
-            />
+        previousLabel={'prev'}
+        nextLabel={'next'}
+        breakLabel={'...'}
+        breakClassName={'break-me'}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageClick}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
+      />
+      <Button
+        sx={{
+          color: 'black',
+        }}
+       onClick={handleSubmit}>
+        Load more
+      </Button>
     </Main>
   );
 }
