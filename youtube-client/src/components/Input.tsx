@@ -14,6 +14,7 @@ type SearchInputProps = {
 
 export default function SearchInput(props: SearchInputProps): JSX.Element {
   const { handleSubmit, value, setValue } = props;
+  const [newValue, setNewValue] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);

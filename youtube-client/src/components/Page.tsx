@@ -8,6 +8,7 @@ import { useQuery } from 'react-query';
 import youtubeApi from '../constants/api';
 import { Video } from '../interfaces';
 import ReactPaginate from 'react-paginate';
+import { useSwipeable } from "react-swipeable";
 
 const Main = styled.main`
   max-width: 1200px;
@@ -24,6 +25,7 @@ export default function Page(): JSX.Element {
   const [offset, setOffset] = useState(4);
   const [perPage] = useState(4);
   const [pageCount, setPageCount] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [cards, setCards] = useState([]);
   const [videos, setVideos] = useState([]);
   const [nextPageToken, setNextPageToken] = useState('');
@@ -50,8 +52,9 @@ export default function Page(): JSX.Element {
         pageToken: nextPageToken ? nextPageToken : null,
       },
     });
-    console.log(response);
+
     refetch();
+
     if (value !== currentValue) {
       setVideos([...response.data.items]);
     } else if (value === currentValue) {
@@ -73,21 +76,39 @@ export default function Page(): JSX.Element {
 
   const handlePageClick = (e: { selected: number }) => {
     const selectedPage = e.selected;
+    setCurrentPage(selectedPage);
     setOffset((selectedPage + 1) * perPage);
   };
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (currentPage === pageCount - 1) return;
+      handlePageClick({
+        selected: currentPage + 1,
+      });
+    },
+    onSwipedRight: () => {
+      if (currentPage === 0) return;
+      handlePageClick({
+        selected: currentPage - 1,
+      });
+    },
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true
+  });
 
   if (isLoading) return <div>Loading...</div>;
 
   if (error) return <div>'An error has occurred: {error.message}</div>;
 
   return (
-    <Main>
+    <Main {...handlers}>
       <SearchInput
         handleSubmit={handleSubmit}
         value={value}
         setValue={setValue}
       />
-      <Grid container spacing={2} style={{ marginBottom: '20px' }}>
+      <Grid container spacing={2} style={{ marginBottom: '20px' }} >
         {cards?.map((el: Video) => {
           return (
             <Grid item xs={12} sm={3} key={el.id.videoId} style={{ minWidth: '250px' }}>
@@ -107,13 +128,14 @@ export default function Page(): JSX.Element {
         onPageChange={handlePageClick}
         containerClassName={'pagination'}
         activeClassName={'active'}
+        forcePage={currentPage}
       />
       <Button
         sx={{
           color: 'black',
         }}
-       onClick={handleSubmit}>
-        Load more
+        onClick={handleSubmit}>
+          Load more
       </Button>
     </Main>
   );
