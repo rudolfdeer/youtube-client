@@ -30,7 +30,6 @@ export default function Page(): JSX.Element {
   const [videos, setVideos] = useState([]);
   const [nextPageToken, setNextPageToken] = useState('');
   const [prevPageToken, setPrevPageToken] = useState('');
-
   const { isLoading, error, data, refetch } = useQuery<Video[], Error>(
     'videos',
     () => handleSubmit(),
@@ -108,10 +107,10 @@ export default function Page(): JSX.Element {
         value={value}
         setValue={setValue}
       />
-      <Grid container spacing={2} style={{ marginBottom: '20px' }} >
+      <Grid container spacing={2} style={{ marginBottom: '40px', justifyContent: 'center' }} >
         {cards?.map((el: Video) => {
           return (
-            <Grid item xs={12} sm={3} key={el.id.videoId} style={{ minWidth: '250px' }}>
+            <Grid item xs={12} sm={3} key={el.id.videoId} style={{ minWidth: '266px'}}>
               <VideoCard video={el} />
             </Grid>
           );
