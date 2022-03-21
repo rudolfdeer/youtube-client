@@ -9,4 +9,12 @@ const youtubeApi = axios.create({
   },
 });
 
-export default youtubeApi;
+export const searchVideos = (value: string, nextPageToken?: string) => {
+  return youtubeApi.get('/search', {
+    params: {
+      type: 'video',
+      q: value,
+      pageToken: nextPageToken ? nextPageToken : null,
+    },
+  });
+}

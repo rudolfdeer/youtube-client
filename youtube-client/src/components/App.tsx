@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import Page from './Page';
 
 const queryClient = new QueryClient();

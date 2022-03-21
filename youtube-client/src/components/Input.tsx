@@ -1,10 +1,5 @@
+import * as React from 'react';
 import { TextField } from '@mui/material';
-import React, { FormEventHandler, useState } from 'react';
-import styled from 'styled-components';
-
-const Form = styled.form`
-  margin-bottom: 50px;
-`;
 
 type SearchInputProps = {
   handleSubmit: Function;
@@ -20,7 +15,7 @@ export default function SearchInput(props: SearchInputProps): JSX.Element {
   };
 
   return (
-    <Form
+    <form className="form"
       onSubmit={(e: React.FormEvent) => {
         e.preventDefault();
         handleSubmit();
@@ -33,6 +28,6 @@ export default function SearchInput(props: SearchInputProps): JSX.Element {
         onChange={handleChange}
         sx={{ width: 280 }}
       />
-    </Form>
+    </form>
   );
 }

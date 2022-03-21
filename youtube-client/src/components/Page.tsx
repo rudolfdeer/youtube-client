@@ -1,23 +1,13 @@
-import { Button, Grid } from '@mui/material';
 import * as React from 'react';
+import { Box, Button, CircularProgress, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
 import VideoCard from './Card';
 import SearchInput from './Input';
-import styled from 'styled-components';
 import { useQuery } from 'react-query';
-import youtubeApi from '../constants/api';
 import { Video } from '../interfaces';
 import ReactPaginate from 'react-paginate';
 import { useSwipeable } from "react-swipeable";
-
-const Main = styled.main`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+import { searchVideos } from '../utils/api';
 
 export default function Page(): JSX.Element {
   const [value, setValue] = useState('');
@@ -29,7 +19,6 @@ export default function Page(): JSX.Element {
   const [cards, setCards] = useState([]);
   const [videos, setVideos] = useState([]);
   const [nextPageToken, setNextPageToken] = useState('');
-  const [prevPageToken, setPrevPageToken] = useState('');
   const { isLoading, error, data, refetch } = useQuery<Video[], Error>(
     'videos',
     () => handleSubmit(),
@@ -44,13 +33,7 @@ export default function Page(): JSX.Element {
   const handleSubmit = async () => {
     if (!value) return;
 
-    const response = await youtubeApi.get('/search', {
-      params: {
-        type: 'video',
-        q: value,
-        pageToken: nextPageToken ? nextPageToken : null,
-      },
-    });
+    const response = await searchVideos(value, nextPageToken);
 
     refetch();
 
@@ -66,10 +49,6 @@ export default function Page(): JSX.Element {
       setNextPageToken(response.data.nextPageToken);
     }
 
-    if (response.data.prevPageToken) {
-      setPrevPageToken(response.data.prevPageToken);
-    }
-
     return response.data.items;
   };
 
@@ -81,36 +60,44 @@ export default function Page(): JSX.Element {
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
-      if (currentPage === pageCount - 1) return;
-      handlePageClick({
-        selected: currentPage + 1,
-      });
+      if (currentPage !== pageCount - 1) {
+        handlePageClick({
+          selected: currentPage + 1,
+        });
+      }
     },
     onSwipedRight: () => {
-      if (currentPage === 0) return;
-      handlePageClick({
-        selected: currentPage - 1,
-      });
+      if (currentPage !== 0) {
+        handlePageClick({
+          selected: currentPage - 1,
+        });
+      }
     },
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
+        <CircularProgress />
+      </Box>
+    )
+  };
 
   if (error) return <div>'An error has occurred: {error.message}</div>;
 
   return (
-    <Main {...handlers}>
+    <main {...handlers} className="main">
       <SearchInput
         handleSubmit={handleSubmit}
         value={value}
         setValue={setValue}
       />
-      <Grid container spacing={2} style={{ marginBottom: '40px', justifyContent: 'center' }} >
+      <Grid container spacing={2} style={{ marginBottom: 40, justifyContent: 'center' }} >
         {cards?.map((el: Video) => {
           return (
-            <Grid item xs={12} sm={3} key={el.id.videoId} style={{ minWidth: '266px'}}>
+            <Grid item xs={12} sm={3} key={el.id.videoId} style={{ minWidth: 266}}>
               <VideoCard video={el} />
             </Grid>
           );
@@ -129,13 +116,14 @@ export default function Page(): JSX.Element {
         activeClassName={'active'}
         forcePage={currentPage}
       />
-      <Button
+      {videos.length > 0 ? <Button
         sx={{
           color: 'black',
         }}
         onClick={handleSubmit}>
           Load more
-      </Button>
-    </Main>
+      </Button> :  null}
+      
+    </main>
   );
 }
