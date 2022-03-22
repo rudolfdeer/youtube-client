@@ -9,7 +9,6 @@
 
 body {
   margin: 0 auto;
-
 }
 
 #root {
@@ -37,8 +36,14 @@ img {
   align-items: center;
 }
 
-.form {
+.search {
+  display: flex;
+  flex-wrap: wrap;
   margin-bottom: 50px;
+}
+
+.form {
+  margin-right: 30px;
 }
 
 .info {
@@ -67,53 +72,56 @@ img {
   .active {
     a {
       background-color: black;
-      border-color: black ;
+      border-color: black;
       color: white;
-      outline: none ;
+      outline: none;
 
-      &:hover, &:focus {
-        background-color: black ;
+      &:hover,
+      &:focus {
+        background-color: black;
         border-color: black;
-        outline: none ;
+        outline: none;
       }
     }
     span {
-      background-color: black ;
+      background-color: black;
       border-color: black;
-      outline: none ;
+      outline: none;
 
-      &:hover, &:focus {
-        background-color: black ;
+      &:hover,
+      &:focus {
+        background-color: black;
         border-color: black;
-        outline: none ;
+        outline: none;
       }
     }
   }
 
   li {
     a {
-      border: 1px solid black ;
+      border: 1px solid black;
       padding: 5px 10px;
       outline: none;
       cursor: pointer;
-      color:black;
+      color: black;
     }
 
     span {
-      color:black;
+      color: black;
     }
 
     &:first-child {
-      a, span {
+      a,
+      span {
         border-radius: 0;
       }
     }
 
     &:last-child {
-      a, span {
+      a,
+      span {
         border-radius: 0;
       }
     }
   }
 }
-

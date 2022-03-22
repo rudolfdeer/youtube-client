@@ -17,4 +17,4 @@ export const searchVideos = (value: string, nextPageToken?: string) => {
       pageToken: nextPageToken ? nextPageToken : null,
     },
   });
-}
+};

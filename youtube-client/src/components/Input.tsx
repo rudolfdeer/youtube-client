@@ -15,7 +15,8 @@ export default function SearchInput(props: SearchInputProps): JSX.Element {
   };
 
   return (
-    <form className="form"
+    <form
+      className="form"
       onSubmit={(e: React.FormEvent) => {
         e.preventDefault();
         handleSubmit();
@@ -31,3 +32,4 @@ export default function SearchInput(props: SearchInputProps): JSX.Element {
     </form>
   );
 }
+

@@ -6,7 +6,7 @@ import SearchInput from './Input';
 import { useQuery } from 'react-query';
 import { Video } from '../interfaces';
 import ReactPaginate from 'react-paginate';
-import { useSwipeable } from "react-swipeable";
+import { useSwipeable } from 'react-swipeable';
 import { searchVideos } from '../utils/api';
 
 export default function Page(): JSX.Element {
@@ -39,7 +39,7 @@ export default function Page(): JSX.Element {
 
     if (value !== currentValue) {
       setVideos([...response.data.items]);
-    } else if (value === currentValue) {
+    } else {
       setVideos([...videos, ...response.data.items]);
     }
 
@@ -74,56 +74,91 @@ export default function Page(): JSX.Element {
       }
     },
     preventDefaultTouchmoveEvent: true,
-    trackMouse: true
+    trackMouse: true,
   });
 
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', height: '100vh', alignItems: 'center' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+          height: '100vh',
+          alignItems: 'center',
+        }}
+      >
         <CircularProgress />
       </Box>
-    )
-  };
+    );
+  }
 
   if (error) return <div>'An error has occurred: {error.message}</div>;
 
   return (
     <main {...handlers} className="main">
-      <SearchInput
-        handleSubmit={handleSubmit}
-        value={value}
-        setValue={setValue}
-      />
-      <Grid container spacing={2} style={{ marginBottom: 40, justifyContent: 'center' }} >
+      <div className="search">
+        <SearchInput
+          handleSubmit={handleSubmit}
+          value={value}
+          setValue={setValue}
+        />
+        <Button
+          sx={{
+            color: 'black',
+          }}
+          onClick={handleSubmit}
+        >
+          Search
+        </Button>
+      </div>
+
+      <Grid
+        container
+        spacing={2}
+        style={{ marginBottom: 40, justifyContent: 'center' }}
+      >
         {cards?.map((el: Video) => {
           return (
-            <Grid item xs={12} sm={3} key={el.id.videoId} style={{ minWidth: 266}}>
+            <Grid
+              item
+              xs={12}
+              sm={3}
+              key={el.id.videoId}
+              style={{ minWidth: 266 }}
+            >
               <VideoCard video={el} />
             </Grid>
           );
         })}
       </Grid>
-      <ReactPaginate
-        previousLabel={'prev'}
-        nextLabel={'next'}
-        breakLabel={'...'}
-        breakClassName={'break-me'}
-        pageCount={pageCount}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
-        onPageChange={handlePageClick}
-        containerClassName={'pagination'}
-        activeClassName={'active'}
-        forcePage={currentPage}
-      />
-      {videos.length > 0 ? <Button
-        sx={{
-          color: 'black',
-        }}
-        onClick={handleSubmit}>
+      {videos.length > 0 ? (
+        <ReactPaginate
+          previousLabel={'prev'}
+          nextLabel={'next'}
+          breakLabel={'...'}
+          breakClassName={'break-me'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={'pagination'}
+          activeClassName={'active'}
+          forcePage={currentPage}
+        />
+      ) : null}
+
+      {videos.length > 0 ? (
+        <Button
+          sx={{
+            color: 'black',
+          }}
+          onClick={handleSubmit}
+        >
           Load more
-      </Button> :  null}
-      
+        </Button>
+      ) : null}
     </main>
   );
 }
+
