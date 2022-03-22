@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const youtubeApi = axios.create({
+const youtubeApiSnippet = axios.create({
   baseURL: 'https://www.googleapis.com/youtube/v3/',
   params: {
     part: 'snippet',
@@ -11,7 +11,7 @@ const youtubeApi = axios.create({
 
 
 export const searchVideos = (value: string, nextPageToken?: string) => {
-  return youtubeApi.get('/search', {
+  return youtubeApiSnippet.get('/search', {
     params: {
       type: 'video',
       q: value,
@@ -20,7 +20,7 @@ export const searchVideos = (value: string, nextPageToken?: string) => {
   });
 };
 
-const list = axios.create({
+const youtubeApiStatistics = axios.create({
   baseURL: 'https://www.googleapis.com/youtube/v3/',
   params: {
     part: 'statistics',
@@ -30,7 +30,7 @@ const list = axios.create({
 
 
 export const getStatictics = (id: string) => {
-  return list.get('/videos', {
+  return youtubeApiStatistics.get('/videos', {
     params: {
       id: id,
     },

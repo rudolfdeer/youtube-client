@@ -19,7 +19,7 @@ const getNumberOfCards = (width: number) => {
   } else {
     return 1;
   }
-}
+};
 
 export default function Page(): JSX.Element {
   const [value, setValue] = useState('');
@@ -41,20 +41,7 @@ export default function Page(): JSX.Element {
     const width = window.innerWidth;
     const numberOfCards = getNumberOfCards(width);
     setPerPage(numberOfCards);
-  }
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-  })
-
-  useEffect(() => {
-    handleResize();
-  })
-
-  useEffect(() => {
-    setPageCount(Math.ceil(videos.length / perPage));
-    setCards(videos.slice(offset - perPage, offset));
-  }, [offset, videos, perPage]);
+  };
 
   const handleSubmit = async () => {
     if (!value) return;
@@ -80,6 +67,9 @@ export default function Page(): JSX.Element {
 
   const handlePageClick = (e: { selected: number }) => {
     const selectedPage = e.selected;
+    if(selectedPage === pageCount - 1) {
+      handleSubmit();
+    }
     setCurrentPage(selectedPage);
     setOffset((selectedPage + 1) * perPage);
   };
@@ -102,6 +92,16 @@ export default function Page(): JSX.Element {
     preventDefaultTouchmoveEvent: true,
     trackMouse: true,
   });
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+  });
+
+  useEffect(() => {
+    setPageCount(Math.ceil(videos.length / perPage));
+    setCards(videos.slice(offset - perPage, offset));
+  }, [offset, videos, perPage]);
 
   if (isLoading) {
     return (
@@ -187,4 +187,3 @@ export default function Page(): JSX.Element {
     </main>
   );
 }
-
