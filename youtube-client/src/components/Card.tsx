@@ -47,9 +47,7 @@ export default function VideoCard(props: VideoCardProps): JSX.Element {
         const response = await getStatictics(video.id.videoId);
         setViewsCount(response.data.items[0].statistics.viewCount);
     }
-    
     fetchData();
-    
   })
 
   return (

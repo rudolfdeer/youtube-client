@@ -8,13 +8,24 @@ import { Video } from '../interfaces';
 import ReactPaginate from 'react-paginate';
 import { useSwipeable } from 'react-swipeable';
 import { searchVideos } from '../utils/api';
-import mock from '../response';
+
+const getNumberOfCards = (width: number) => {
+  if (width > 1920) {
+    return 4;
+  } else if (width > 1200) {
+    return 3;
+  } else if (width > 640) {
+    return 2;
+  } else {
+    return 1;
+  }
+}
 
 export default function Page(): JSX.Element {
   const [value, setValue] = useState('');
+  const [perPage, setPerPage] = useState(4);
   const [currentValue, setCurrentValue] = useState('');
-  const [offset, setOffset] = useState(4);
-  const [perPage] = useState(4);
+  const [offset, setOffset] = useState(perPage);
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [cards, setCards] = useState([]);
@@ -26,16 +37,29 @@ export default function Page(): JSX.Element {
     { enabled: false }
   );
 
+  const handleResize = () => {
+    const width = window.innerWidth;
+    const numberOfCards = getNumberOfCards(width);
+    setPerPage(numberOfCards);
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  })
+
+  useEffect(() => {
+    handleResize();
+  })
+
   useEffect(() => {
     setPageCount(Math.ceil(videos.length / perPage));
     setCards(videos.slice(offset - perPage, offset));
-  }, [offset, videos]);
+  }, [offset, videos, perPage]);
 
   const handleSubmit = async () => {
     if (!value) return;
 
     const response = await searchVideos(value, nextPageToken);
-    //const response = mock;
 
     refetch();
 
