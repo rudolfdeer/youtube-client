@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Card,
@@ -14,6 +15,7 @@ import {
   Visibility as VisibilityIcon,
 } from '@mui/icons-material';
 import { Video } from '../interfaces';
+import { getStatictics } from '../utils/api';
 
 type VideoCardProps = {
   video: Video;
@@ -38,9 +40,20 @@ function InfoContainerElement({
 
 export default function VideoCard(props: VideoCardProps): JSX.Element {
   const { video } = props;
+  const [viewsCount, setViewsCount] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+        const response = await getStatictics(video.id.videoId);
+        setViewsCount(response.data.items[0].statistics.viewCount);
+    }
+    
+    fetchData();
+    
+  })
 
   return (
-    <Card sx={{ width: 250, height: 400, margin: '0 auto' }}>
+    <Card sx={{ width: 250, height: 400, margin: '0 auto' }} className="card">
       <Link
         href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
         target="_blank"
@@ -77,7 +90,7 @@ export default function VideoCard(props: VideoCardProps): JSX.Element {
           snippet={video.snippet.publishedAt.split('T')[0]}
           icon={<DateRangeIcon />}
         />
-        <InfoContainerElement snippet={'views'} icon={<VisibilityIcon />} />
+        <InfoContainerElement snippet={`${viewsCount}`} icon={<VisibilityIcon />} />
         <Typography
           variant="body2"
           color="text.secondary"

@@ -8,6 +8,7 @@ import { Video } from '../interfaces';
 import ReactPaginate from 'react-paginate';
 import { useSwipeable } from 'react-swipeable';
 import { searchVideos } from '../utils/api';
+import mock from '../response';
 
 export default function Page(): JSX.Element {
   const [value, setValue] = useState('');
@@ -34,6 +35,7 @@ export default function Page(): JSX.Element {
     if (!value) return;
 
     const response = await searchVideos(value, nextPageToken);
+    //const response = mock;
 
     refetch();
 
