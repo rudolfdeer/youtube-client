@@ -9,7 +9,6 @@ const youtubeApiSnippet = axios.create({
   },
 });
 
-
 export const searchVideos = (value: string, nextPageToken?: string) => {
   return youtubeApiSnippet.get('/search', {
     params: {
@@ -27,7 +26,6 @@ const youtubeApiStatistics = axios.create({
     key: 'AIzaSyDeAYkuiFGAakVnoFI3JtEtjqwkYZWTgnM',
   },
 });
-
 
 export const getStatictics = (id: string) => {
   return youtubeApiStatistics.get('/videos', {
