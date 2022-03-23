@@ -37,6 +37,16 @@ export default function Page(): JSX.Element {
     { enabled: false }
   );
 
+  useEffect(() => {
+    setPageCount(Math.ceil(videos.length / perPage));
+    setCards(videos.slice(offset - perPage, offset));
+  }, [offset, videos, perPage]);
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+  });
+
   const handleResize = () => {
     const width = window.innerWidth;
     const numberOfCards = getNumberOfCards(width);
@@ -52,6 +62,7 @@ export default function Page(): JSX.Element {
 
     if (value !== currentValue) {
       setVideos([...response.data.items]);
+      setCurrentPage(0);
     } else {
       setVideos([...videos, ...response.data.items]);
     }
@@ -92,16 +103,6 @@ export default function Page(): JSX.Element {
     preventDefaultTouchmoveEvent: true,
     trackMouse: true,
   });
-
-  useEffect(() => {
-    handleResize();
-    window.addEventListener('resize', handleResize);
-  });
-
-  useEffect(() => {
-    setPageCount(Math.ceil(videos.length / perPage));
-    setCards(videos.slice(offset - perPage, offset));
-  }, [offset, videos, perPage]);
 
   if (isLoading) {
     return (
