@@ -153,11 +153,18 @@ img {
   animation: fadeIn .5s ease-in;
 
   &:hover {
-    cursor: grab;
+    cursor: pointer;
   }
 
   img {
     pointer-events: none;
+  }
+}
+
+.chart {
+
+  &-invisible {
+    display: none;
   }
 }
   
