@@ -18,7 +18,6 @@ import {
 import { Video } from '../interfaces';
 import { getStatictics } from '../utils/api';
 import Chart from './Chart';
-import { statisticsMock } from '../mock';
 
 type VideoCardProps = {
   video: Video;
@@ -51,9 +50,8 @@ export default function VideoCard(props: VideoCardProps): JSX.Element {
 
   useEffect(() => {
     const fetchData = async () => {
-      //const response = await getStatictics(video.id.videoId);
-      //const statistics = response.data.items[0].statistics;
-      const statistics = statisticsMock;
+      const response = await getStatictics(video.id.videoId);
+      const statistics = response.data.items[0].statistics;
       setViewsCount(statistics.viewCount);
       setLikesCount(statistics.likeCount);
       setFavCount(statistics.favoriteCount);

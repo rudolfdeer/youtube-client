@@ -8,10 +8,6 @@ import { Video } from '../interfaces';
 import ReactPaginate from 'react-paginate';
 import { useSwipeable } from 'react-swipeable';
 import { searchVideos } from '../utils/api';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
-import { mock } from '../mock';
-import Chart from './Chart';
 
 const getNumberOfCards = (width: number) => {
   if (width > 1920) {
@@ -24,7 +20,6 @@ const getNumberOfCards = (width: number) => {
     return 1;
   }
 };
-
 
 export default function Page(): JSX.Element {
   const [value, setValue] = useState('');
@@ -61,8 +56,7 @@ export default function Page(): JSX.Element {
   const handleSubmit = async () => {
     if (!value) return;
 
-    //const response = await searchVideos(value, nextPageToken);
-    const response = mock;
+    const response = await searchVideos(value, nextPageToken);
 
     refetch();
 

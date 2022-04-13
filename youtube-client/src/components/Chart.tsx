@@ -1,7 +1,5 @@
-import React from 'react';
-import {
-  Chart as ChartJS, ArcElement, Tooltip, Legend,
-} from 'chart.js';
+import * as React from 'react';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -18,27 +16,26 @@ const options = {
     },
   },
   redraw: true,
+  maintainAspectRatio: false,
 };
 
 type ChartProps = {
   isVisible: boolean;
-    views: number,
-    likes: number,
-    favorites: number,
-    comments: number,
-  
-}
+  views: number;
+  likes: number;
+  favorites: number;
+  comments: number;
+};
 
 export default function Chart(props: ChartProps) {
-  const {isVisible, views, likes, comments, favorites} = props;
+  const { isVisible, views, likes, comments, favorites } = props;
   const statistics = [views, likes, comments, favorites];
 
   const data = {
     labels: ['views', 'likes', 'comments', 'favorites'],
     datasets: [
       {
-        label: '# of Votes',
-        data: statistics.map((el) => el),
+        data: statistics.map((el) => (el / 1000).toFixed(1)),
         backgroundColor: [
           'rgba(255, 206, 86, 0.2)',
           'rgba(75, 192, 192, 0.2)',
@@ -56,11 +53,17 @@ export default function Chart(props: ChartProps) {
     ],
   };
 
-
   return (
     <>
-    {isVisible ? (<Pie options={options} data={data} className="chart"/>) : null}
+      {isVisible ? (
+        <Pie
+          options={options}
+          data={data}
+          height={'100%'}
+          width={'100%'}
+          className="chart"
+        />
+      ) : null}
     </>
-  )
-  ;
+  );
 }
