@@ -32,10 +32,19 @@ export default function Chart(props: ChartProps) {
   const statistics = [views, likes, comments, favorites];
 
   const data = {
-    labels: ['views', 'likes', 'comments', 'favorites'],
+    labels: ['views, M', 'likes, 10K', 'comments, 1K', 'favorites, 1K'],
     datasets: [
       {
-        data: statistics.map((el) => (el / 1000).toFixed(1)),
+        data: statistics.map((el) => {
+          if (statistics.indexOf(el) === 0) {
+            return (el / 1000000).toFixed(1);
+          }
+          if (statistics.indexOf(el) === 1) {
+            return (el / 10000).toFixed(1);
+          } 
+          return (el / 1000).toFixed(1);
+        }),
+
         backgroundColor: [
           'rgba(255, 206, 86, 0.2)',
           'rgba(75, 192, 192, 0.2)',
