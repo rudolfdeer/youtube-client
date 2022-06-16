@@ -1,0 +1,19 @@
+{
+  "plugins": [
+    "@babel/plugin-transform-react-jsx",
+    ["@babel/plugin-transform-runtime", { "regenerator": true }],
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": true,
+        "libraryDirectory": "lib"
+      }
+    ]
+  ],
+  "presets": [
+    "@babel/preset-typescript",
+    ["@babel/preset-env", { "targets": { "node": "current" } }],
+    "@babel/preset-react"
+  ]
+}

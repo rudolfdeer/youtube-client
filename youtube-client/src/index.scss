@@ -1,0 +1,164 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Nunito', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  color: black;
+}
+
+body {
+  margin: 0 auto;
+}
+
+#root {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1680px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+
+@media (max-width: 639px) {
+  .search {
+    flex-direction: column;
+    align-items: center;
+
+    .form {
+      margin-bottom: 20px;
+      margin-right: 0;
+    }
+  }
+}
+
+.form {
+  margin-right: 30px;
+}
+
+.info {
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding-left: 16px;
+  }
+
+  &__text {
+    display: block;
+    margin: 0;
+    margin-left: 15px;
+  }
+}
+
+.pagination {
+  margin-bottom: 24px;
+  display: flex;
+  list-style: none;
+  outline: none;
+  justify-content: center;
+  padding-left: 0;
+
+  .active {
+    a {
+      background-color: black;
+      border-color: black;
+      color: white;
+      outline: none;
+
+      &:hover,
+      &:focus {
+        background-color: black;
+        border-color: black;
+        outline: none;
+      }
+    }
+    span {
+      background-color: black;
+      border-color: black;
+      outline: none;
+
+      &:hover,
+      &:focus {
+        background-color: black;
+        border-color: black;
+        outline: none;
+      }
+    }
+  }
+
+  li {
+    a {
+      border: 1px solid black;
+      padding: 5px 10px;
+      outline: none;
+      cursor: pointer;
+      color: black;
+    }
+
+    span {
+      color: black;
+    }
+
+    &:first-child {
+      a,
+      span {
+        border-radius: 0;
+      }
+    }
+
+    &:last-child {
+      a,
+      span {
+        border-radius: 0;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0
+  }
+    
+  to {
+    opacity: 1
+  }
+}
+  
+	
+.card {
+  animation: fadeIn .5s ease-in;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  img {
+    pointer-events: none;
+  }
+}
+
+  
